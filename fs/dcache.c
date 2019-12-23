@@ -1884,6 +1884,8 @@ void d_instantiate_new(struct dentry *entry, struct inode *inode)
 	BUG_ON(!hlist_unhashed(&entry->d_u.d_alias));
 	BUG_ON(!inode);
 	lockdep_annotate_inode_mutex_key(inode);
+	/* WORKAROUND for calling security_d_instantiate() */
+	entry->d_inode = inode;
 	security_d_instantiate(entry, inode);
 	spin_lock(&inode->i_lock);
 	__d_instantiate(entry, inode);
